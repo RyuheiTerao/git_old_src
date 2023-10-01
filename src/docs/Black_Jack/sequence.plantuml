@@ -1,0 +1,151 @@
+@startuml
+participant Main
+
+participant Game
+participant Message
+participant Deck
+participant Card
+actor Player
+actor User
+actor Dealer
+participant Message
+participant Judge
+
+Main--> Game:start()：ゲームスタート
+activate Game
+
+Game --> Message:new Message:メッセージクラスの作成
+activate Message
+Game <-- Message
+deactivate Message
+
+Game --> Message:showStartMessage():ブラックジャックを開始します
+activate Message
+Game <-- Message
+deactivate Message
+
+Game--> Deck:new Deck:デッキ生成
+activate Deck
+Deck--> Card:new Card:カードを作成
+activate Card
+Deck <-- Card
+deactivate Card
+Game <-- Deck
+deactivate Deck
+
+Game--> Player:new Player:ユーザーを作成
+activate Player
+
+Player --> User:ユーザーを作成
+activate User
+Player <-- User
+deactivate User
+Game <-- Player
+deactivate Player
+
+Game--> Player:new Player:ディーラーを作成
+activate Player
+
+Player --> Dealer:ディーラーを作成
+activate Dealer
+Player <-- Dealer
+deactivate Dealer
+Game <-- Player
+deactivate Player
+
+Game --> Message:showStartHandMessage(User):ユーザーが引いたカードを表示　(ユーザークラスを渡す)
+activate Message
+Message --> Player:getHands():プレイヤーの手札を取得
+activate Player
+Message <-- Player
+deactivate Player
+
+Message --> Player:getPlayerInformation():プレイヤー情報を取得
+activate Player
+Message <-- Player
+deactivate Player
+Game <-- Message
+deactivate Message
+
+Game --> Message:showStartHandMessage(Dealer):ディーラーが引いたカードを表示（ディーラークラスを渡す）
+activate Message
+Message --> Player:getHands():プレイヤーの手札を取得
+activate Player
+Message <-- Player
+deactivate Player
+
+Message --> Player:getPlayerInformation():プレイヤー情報を取得
+activate Player
+Message <-- Player
+deactivate Player
+Game <-- Message
+deactivate Message
+
+Game --> Judge:new Judege:Judgeクラスの作成
+activate Judge
+Game <-- Judge
+deactivate judge
+
+Game --> Judge:judgePoint(User):ユーザーの得点を計算（ユーザークラスを渡す）
+activate Judge
+Judge --> User:ユーザーの手札を取得
+activate User
+User --> Card:数字を取得
+activate Card
+User <-- Card
+deactivate Card
+Judge <-- User
+deactivate User
+Game <-- Judge
+deactivate Judge
+
+Game --> Message:showPoint(sumPoint):ユーザーの取得したポイントを表示
+activate Message
+Game <-- Message
+deactivate Message
+
+Game --> Message:questionAddCard(User):ユーザーにカードを追加するか確認（ユーザークラスを渡す）
+activate Message
+Message --> Player:answerAddCard():プレイヤーの返答を取得
+activate Player
+Player --> Player:addCard():プレイヤーが'Y'と返答した場合カードを引く
+Message <-- Player
+deactivate Player
+Game <--Message
+
+Game --> Judge:judgePoint(Dealer):ディーラーの得点を計算（ディーラークラスを渡す）
+activate Judge
+Judge --> Dealer:ディーラーの手札を取得
+activate Dealer
+Dealer--> Card:数字を取得
+activate Card
+Dealer<-- Card
+deactivate Card
+Judge <-- Dealer
+deactivate Dealer
+Game <-- Judge
+deactivate Judge
+
+Game --> Message:showPoint(sumPoint):ディーラーの取得したポイントを表示
+activate Message
+Game <-- Message
+deactivate Message
+Game --> Dealer:addCard:ディーラーのポイントが17以上になるまでカードを引く
+activate Dealer
+Game <-- Dealer
+deactivate Dealer
+
+
+Game --> Judge:JudgeWinner():勝者判定
+activate Judge
+Game <-- Judge
+deactivate Judge
+
+Game --> Message:showWinner:勝者表示
+activate Message
+Game <-- Message
+deactivate Message
+
+Main--> Game
+deactivate Game
+@enduml
