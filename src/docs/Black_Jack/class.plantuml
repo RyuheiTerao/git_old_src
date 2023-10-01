@@ -1,0 +1,76 @@
+@startuml
+skinparam classAttributeIconSize 0
+class Game{
+
+ -gameStart()
+
+}
+
+class Message{
+ -showStartMessage()
+ -showStartHandMessage()
+ -changeSuitToJapanese()
+ -showPoint()
+ -questionAddCard()
+ -()
+ -()
+}
+
+
+class Deck{
+ -__construct()
+ -drawCards()
+ -shuffleDeck()
+
+}
+
+class Card{
+ -__construct()
+ -getSuit()
+ -getNumber()
+}
+
+
+interface Player{
+ -drawCards()
+ -addCard()
+ -getPoint()
+ -getHands()
+ -getPlayerInformation()
+}
+
+class User{
+ -()
+ -()
+ -()
+
+}
+
+class Dealer{
+ -()
+ -()
+ -()
+
+}
+
+class Judge{
+ -judgePoint()
+ -checkJQK()
+ -judgeWinner()
+}
+
+
+Game -- Deck
+Game -- Player
+Game -- Message
+
+
+Deck -- Card
+
+Game -- Judge
+
+Player <|.. User
+Player <|.. Dealer
+
+Player -- Card
+@enduml
